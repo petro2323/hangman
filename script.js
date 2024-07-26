@@ -96,17 +96,19 @@ String.prototype.replaceAt = function(index, replacement) {
 function check_letter_or_word() {
     const max_mistake_num = 5
     let input = document.getElementById('input_value')
+    let client_view = document.getElementById('word')
+
+    let convert_input_tolow = input.value.toLowerCase()
 
     if (counter < max_mistake_num) {
         
-        if (word.includes(input.value)) {
-            let client_view = document.getElementById('word')
+        if (word.includes(convert_input_tolow)) {
 
             if (input.value.length == 1) {
-                let indexes = index_letter_appear(word, input.value)
+                let indexes = index_letter_appear(word, convert_input_tolow)
                 
                 for (let index of indexes) {
-                    client_view.innerHTML = client_view.textContent.replaceAt(index * 2, input.value)
+                    client_view.innerHTML = client_view.textContent.replaceAt(index * 2, convert_input_tolow)
                 }
 
                 input.value = ''
@@ -115,7 +117,7 @@ function check_letter_or_word() {
                 }
                 
             } else if (input.value.length == word.length) {
-                let input_to_arr = [...input.value]
+                let input_to_arr = [...convert_input_tolow]
                 let char_x2 = ''
 
                 for (let i of input_to_arr) {
@@ -145,6 +147,16 @@ function check_letter_or_word() {
 
     } else {
         input.value = ''
+
+        let input_to_arr = [...word]
+        let char_x2 = ''
+
+        for (let i of input_to_arr) {
+            char_x2 += i + ' '
+        }
+
+        client_view.innerHTML = char_x2
+
         game_status(input, 0)
         set_hang_status(counter + 1)
     } 
