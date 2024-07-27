@@ -13,6 +13,11 @@ const words = [
 
 let word = ''
 let counter = 0
+let success = new Audio('sounds/success.wav')
+let fail = new Audio('sounds/fail.wav')
+
+success.volume = 0.6
+fail.volume = 0.2
 
 function start_game() {
 
@@ -114,6 +119,7 @@ function check_letter_or_word() {
                 input.value = ''
                 if (!client_view.textContent.includes('_')) {
                     game_status(input, 1)
+                    success.play()
                 }
                 
             } else if (input.value.length == word.length) {
@@ -128,6 +134,7 @@ function check_letter_or_word() {
 
                 input.value = ''
                 game_status(input, 1)
+                success.play()
                 
             } else if (input.value.length == 0) {
                 return
@@ -159,6 +166,7 @@ function check_letter_or_word() {
 
         game_status(input, 0)
         set_hang_status(counter + 1)
+        fail.play()
     } 
 }
 
