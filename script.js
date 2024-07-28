@@ -54,8 +54,10 @@ function game_status(input, win_bit) {
 
     if (win_bit == 1) {
         input.placeholder = 'You win!'
+        success.play()
     } else if (win_bit == 0) {
         input.placeholder = 'Game over'
+        fail.play()
     }
 
     document.getElementById('check-btn').remove()
@@ -64,9 +66,7 @@ function game_status(input, win_bit) {
 
     document.querySelector('body').appendChild(div_try_again)
 
-    document.getElementById('try-again-btn').addEventListener('click', () => {
-        window.location.reload()
-    })
+    document.getElementById('try-again-btn').addEventListener('click', () => window.location.reload())
 }
 
 function set_hang_status(number) {
@@ -94,10 +94,6 @@ function set_hang_status(number) {
 
 }
 
-String.prototype.replaceAt = function(index, replacement) {
-    return this.substring(0, index) + replacement + this.substring(index + replacement.length)
-}
-
 function check_letter_or_word() {
     const max_mistake_num = 5
     let input = document.getElementById('input_value')
@@ -119,22 +115,13 @@ function check_letter_or_word() {
                 input.value = ''
                 if (!client_view.textContent.includes('_')) {
                     game_status(input, 1)
-                    success.play()
                 }
                 
             } else if (input.value.length == word.length) {
-                let input_to_arr = [...convert_input_tolow]
-                let char_x2 = ''
-
-                for (let i of input_to_arr) {
-                    char_x2 += i + ' '
-                }
-
-                client_view.innerHTML = char_x2
+                client_view.innerHTML = char_x2([...convert_input_tolow])
 
                 input.value = ''
                 game_status(input, 1)
-                success.play()
                 
             } else if (input.value.length == 0) {
                 return
@@ -155,18 +142,10 @@ function check_letter_or_word() {
     } else {
         input.value = ''
 
-        let input_to_arr = [...word]
-        let char_x2 = ''
-
-        for (let i of input_to_arr) {
-            char_x2 += i + ' '
-        }
-
-        client_view.innerHTML = char_x2
+        client_view.innerHTML = char_x2([...word])
 
         game_status(input, 0)
         set_hang_status(counter + 1)
-        fail.play()
     } 
 }
 
@@ -201,4 +180,18 @@ function index_letter_appear(word, letter) {
     }
 
     return indexes
+}
+
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length)
+}
+
+function char_x2(array) {
+    let word = ''
+    
+    for (let i of array) {
+        word += i + ' '
+    }
+
+    return word
 }
